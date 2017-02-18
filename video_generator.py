@@ -12,7 +12,7 @@ def process(img):
     processed = process_image(img, line_tracker)
     return processed
 
-output_video = 'output_t_video.mp4'
+output_video = 'output_video2.mp4'
 input_video = 'project_video.mp4'
 
 clip = VideoFileClip(input_video)

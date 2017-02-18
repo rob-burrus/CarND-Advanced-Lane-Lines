@@ -84,18 +84,26 @@ def process_image(img, line_tracker):
     # Apply Gradient and Color Thresholds
     #
     ksize = 3
-    gradx_binary = abs_sobel_thresh(img, orient='x', sobel_kernel=ksize, thresh=(20, 100))
+    gradx_binary = abs_sobel_thresh(img, orient='x', sobel_kernel=ksize, thresh=(12, 100))
     grady_binary = abs_sobel_thresh(img, orient='y', sobel_kernel=ksize, thresh=(25, 100))
     mag_binary = mag_thresh(img, sobel_kernel=ksize, mag_thresh=(30, 100))
     dir_binary = dir_threshold(img, sobel_kernel=15, thresh=(0.7, 1.3))
-    color_binary = hls_select(img, thresh=(170, 255))
+    color_binary = hls_select(img, thresh=(90, 255))
     combined_binary = np.zeros_like(gradx_binary)
-    combined_binary[(color_binary == 1) | ((gradx_binary == 1) & (grady_binary == 1)) ] = 1
+    #combined_binary[(color_binary == 1) | ((gradx_binary == 1) & (grady_binary == 1)) ] = 1
+    combined_binary[(color_binary == 1) | (gradx_binary == 1) ] = 1
+    #plt.imshow(gradx_binary, cmap='gray')
+    #plt.show()
+    #plt.imshow(grady_binary, cmap='gray')
+    #plt.show()
+    #plt.imshow(color_binary, cmap='gray')
+    #plt.show()
     #plt.imshow(combined_binary, cmap='gray')
     #plt.show()
+
     #f, imgs = plt.subplots(2, 2, sharex=True, sharey=True)
     #f.tight_layout()
-    #imgs[0,0].imshow(gradx_binary, cmap='gray')
+    #imgs[0,0].imshow(grady_binary, cmap='gray')
     #imgs[0,0].set_title('grad_x')
     #imgs[0,1].imshow(color_binary, cmap='gray')
     #imgs[0,1].set_title('color')

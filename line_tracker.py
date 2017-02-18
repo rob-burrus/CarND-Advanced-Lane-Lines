@@ -158,8 +158,10 @@ class line_tracker():
         right_curverad = ((1 + (2*right_fit_cr[0]*y_eval*ym_per_pix + right_fit_cr[1])**2)**1.5) / np.absolute(2*right_fit_cr[0])
         #Now in meters
 
-        #lane line sanity checks - similar curvature (roughly parallel)? separated by the right distance horizontally?
-        if (np.absolute(left_curverad - right_curverad) > 400):
+        #lane line sanity checks -
+        #similar curvature (roughly parallel)? for lines with a radius of < 10,000 meters (non-straight), radius difference is < 400
+        #separated by the right distance horizontally? left-right fit is < 700 pixels and > 400
+        if (((left_curverad < 10000) & (np.absolute(left_curverad - right_curverad) > 400)) | ((((right_fitx[-1] - left_fitx[-1]) > 700)) | ((right_fitx[-1] - left_fitx[-1]) < 400))):
             self.detected = False
             self.number_of_misses = self.number_of_misses + 1
         else:
@@ -189,12 +191,13 @@ class line_tracker():
         # Combine the result with the original image
         result = cv2.addWeighted(img, 1, newwarp, 1.0, 0)
 
-        plt.imshow(out_img)
-        plt.show()
-        plt.imshow(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
-        plt.show()
+        #plt.imshow(out_img)
+        #plt.show()
+        #plt.imshow(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
+        #plt.show()
 
         camera_center = (left_fitx[-1] + right_fitx[-1])/2
+
         center_diff = (camera_center - binary_warped.shape[1]/2)*xm_per_pix
         side_pos = 'left'
         if center_diff <= 0:
