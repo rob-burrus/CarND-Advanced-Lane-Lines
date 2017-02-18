@@ -160,8 +160,8 @@ class line_tracker():
 
         #lane line sanity checks -
         #similar curvature (roughly parallel)? for lines with a radius of < 10,000 meters (non-straight), radius difference is < 400
-        #separated by the right distance horizontally? left-right fit is < 700 pixels and > 400
-        if (((left_curverad < 10000) & (np.absolute(left_curverad - right_curverad) > 400)) | ((((right_fitx[-1] - left_fitx[-1]) > 700)) | ((right_fitx[-1] - left_fitx[-1]) < 400))):
+        #separated by the right distance horizontally? left-right fit is < 750 pixels and > 500
+        if (((left_curverad < 10000) & (np.absolute(left_curverad - right_curverad) > 400)) | ((((right_fitx[-1] - left_fitx[-1]) > 750)) | ((right_fitx[-1] - left_fitx[-1]) < 500))):
             self.detected = False
             self.number_of_misses = self.number_of_misses + 1
         else:

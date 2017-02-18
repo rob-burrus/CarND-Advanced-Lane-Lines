@@ -119,7 +119,7 @@ def process_image(img, line_tracker):
     height_pct = .62
     bottom_trim = .935
     src = np.float32([[img.shape[1]*(.5-mid_width/2), img.shape[0]*height_pct], [img.shape[1]*(.5+mid_width/2), img.shape[0]*height_pct], [img.shape[1]*(.5+bot_width/2), img.shape[0]*bottom_trim], [img.shape[1]*(.5-bot_width/2), img.shape[0]*bottom_trim] ])
-    offset = img_size[0]*.2
+    offset = img_size[0]*.15
     dst = np.float32([[offset,0], [img_size[0]-offset, 0], [img_size[0]-offset, img_size[1]], [offset, img_size[1]]])
 
     M = cv2.getPerspectiveTransform(src, dst)
