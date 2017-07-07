@@ -46,15 +46,25 @@ def dir_threshold(img, sobel_kernel=3, thresh=(0, np.pi/2)):
     return binary_output
 
 def hls_select(img, channel=2, thresh=(0, 255)):
-    hls = cv2.cvtColor(img, cv2.COLOR_BGR2HLS)
-    s_channel = hls[:,:,channel]
-    binary_output = np.zeros_like(s_channel)
-    binary_output[(s_channel > thresh[0]) & (s_channel <= thresh[1])] = 1
+    hls = cv2.cvtColor(img, cv2.COLOR_RGB2HLS).astype(np.float)
+    selected_channel = hls[:,:,channel]
+    #selected_channel = cv2.equalizeHist(selected_channel)
+    binary_output = np.zeros_like(selected_channel)
+    binary_output[(selected_channel > thresh[0]) & (selected_channel <= thresh[1])] = 1
+    return binary_output
+
+def ycrcb_select(img, channel=2, thresh=(0, 255)):
+    YCrCb = cv2.cvtColor(img, cv2.COLOR_RGB2YCrCb).astype(np.float)
+    selected_channel = YCrCb[:,:,channel]
+    #selected_channel = cv2.equalizeHist(selected_channel)
+    binary_output = np.zeros_like(selected_channel)
+    binary_output[(selected_channel > thresh[0]) & (selected_channel <= thresh[1])] = 1
     return binary_output
 
 def rgb_select(img, channel=0, thresh=(0, 255)):
-    rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-    r_channel = rgb[:,:,channel]
-    binary_output = np.zeros_like(r_channel)
-    binary_output[(r_channel > thresh[0]) & (r_channel <= thresh[1])] = 1
+    rgb = img#cv2.cvtColor(img, cv2.COLOR_RGB2RGB).astype(np.float)
+    selected_channel = rgb[:,:,channel]
+    #selected_channel = cv2.equalizeHist(selected_channel)
+    binary_output = np.zeros_like(selected_channel)
+    binary_output[(selected_channel > thresh[0]) & (selected_channel <= thresh[1])] = 1
     return binary_output
