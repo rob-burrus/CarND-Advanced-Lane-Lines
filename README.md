@@ -13,7 +13,7 @@ Software pipeline to identify lane lines and measure lane curvature from a video
 
 ### Calibrate Camera
 Use OpenCV functions findChessboardCorners, drawChessboardCorners, calibrateCamera and chessboard images to compute calibration and distortion matrix to undistort each frame of video.
-![chessboard](original_chessboard.png) ![chessboard](undistorted_chessboard.png) 
+![chessboard](chessboard.png) 
 
 ## Pipeline
 
