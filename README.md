@@ -13,6 +13,7 @@ Software pipeline to identify lane lines and measure lane curvature from a video
 
 ### Calibrate Camera
 Use OpenCV functions findChessboardCorners, drawChessboardCorners, calibrateCamera and chessboard images to compute calibration and distortion matrix to undistort each frame of video.
+
 ![chessboard](chessboard.png) 
 
 ## Pipeline
@@ -55,4 +56,18 @@ Warp the fit from the rectified image back onto the original image. Add picture 
 
 ![final](final.png)
 
+## Dependencies
 
+* Python 3
+* OpenCV
+* Numpy
+* matplotlib
+* Jupyter Notebook
+
+Note: Udacity has a handy Anaconda environment that includes many of the dependencies used in the Self-Driving Car Nanodegree: [CarND Term1 Starter Kit](https://github.com/udacity/CarND-Term1-Starter-Kit/blob/master/README.md)
+
+## Running the code 
+The project is completed in a Jupyter notebook. 
+To start Jupyter in your browser, run the following command at the terminal prompt and within your Python 3 environment:
+
+`> jupyter notebook`
