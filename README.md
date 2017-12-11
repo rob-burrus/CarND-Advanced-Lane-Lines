@@ -20,7 +20,7 @@ Use OpenCV functions findChessboardCorners, drawChessboardCorners, calibrateCame
 ### 1. Distortion Correction
 Use the OpenCV function undistort() and the pickled camera matrix and distortion coefficents to undistort the frame
 
-![distortion](original_frame.png) ![distortion](undistorted_frame.png)
+![distortion](chessboard.png)
 
 ### 2. Apply Color and Gradient Thresholds
 
