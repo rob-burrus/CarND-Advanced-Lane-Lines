@@ -61,8 +61,16 @@ def ycrcb_select(img, channel=2, thresh=(0, 255)):
     binary_output[(selected_channel > thresh[0]) & (selected_channel <= thresh[1])] = 1
     return binary_output
 
+def lab_select(img, channel=2, thresh=(0, 255)):
+    LAB = cv2.cvtColor(img, cv2.COLOR_RGB2LAB).astype(np.float)
+    selected_channel = LAB[:,:,channel]
+    #selected_channel = cv2.equalizeHist(selected_channel)
+    binary_output = np.zeros_like(selected_channel)
+    binary_output[(selected_channel > thresh[0]) & (selected_channel <= thresh[1])] = 1
+    return binary_output
+
 def rgb_select(img, channel=0, thresh=(0, 255)):
-    rgb = img#cv2.cvtColor(img, cv2.COLOR_RGB2RGB).astype(np.float)
+    rgb = img.astype(np.float)
     selected_channel = rgb[:,:,channel]
     #selected_channel = cv2.equalizeHist(selected_channel)
     binary_output = np.zeros_like(selected_channel)
