@@ -23,16 +23,17 @@ Use the OpenCV function undistort() and the pickled camera matrix and distortion
 
 ![distortion](chessboard.png)
 
-### 2. Apply Color and Gradient Thresholds
+### 2. Perspective Transform
+
+Use trapezoidal region of interest and OpenCV function getPerspectiveTransform to get transform matrix and inverse matrix.
+
+![perspective transform](transform.png)
+
+### 3. Apply Color and Gradient Thresholds
 
 I manually tuned these color and gradient thresholds to be robust to lane color and varied lighting conditions. There are several combinations of thresholds that are detailed below:
 
 ![combined](combined.png)
-
-### 3. Perspective Transform
-Use trapezoidal region of interest and OpenCV function getPerspectiveTransform to get transform matrix and inverse matrix.
-
-![perspective transform](transform.png)
 
 ### 4. Lane Line Detection and Polynomial Fit
 To identify lane lines, use a sliding window technique to identify non-zero pixels (pixels that have passed the thresholding stage). After tuning, I discovered that 9 windows, 100 pixel window width, and 50 pixel minimum to shift window, gives good performance. Using the detected pixels, a lane line polynomial fit is calculated and saved for use in future frames.
