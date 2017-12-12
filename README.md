@@ -45,7 +45,7 @@ There are 2 ways in which this pipeline categorizes the pixels from the binary i
 ### 4.1 Lane line Detection - New Fit 
 This technique is "starting from scratch". This occurs either at the beginning of the video, or when the pipeline has not made a high confidence detection due to difficult road conditions. To start, a histogram of the bottom half of the binary threshold image determines the X position of the left and right lane lines. These two positions are where the sliding window technique begins. After tuning, I discovered that 9 windows, 100 pixel window width, and 50 pixel minimum to shift window, gives good performance. Pixels identified in each window are considered lane line pixels. Using these detected pixels, a lane line polynomial fit is calculated and saved for use in future frames.
 
-![sliding window](processed_images/sliding_window.png)
+![sliding window](processed_images/sliding_windows.png)
 
 ### 4.2 Lane Line Detection - Historical Fit
 This approach is used to detect lane line pixels if the "high confidence" condition, stated above, is passed. In this case, instead of a sliding window, the previous 3 high confidence polynomial fits are averaged. This average polynomial becomes the region of interest (+/- 75 pixels horizontally) for detecting lane line pixels in this frame. 
