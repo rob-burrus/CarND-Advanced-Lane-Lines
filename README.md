@@ -33,20 +33,35 @@ Use trapezoidal region of interest and OpenCV function getPerspectiveTransform t
 
 ### 3. Apply Color and Gradient Thresholds
 
-I manually tuned these color and gradient thresholds to be robust to lane color and varied lighting conditions. There are several combinations of thresholds that are detailed below:
+I manually tuned these color and gradient thresholds to be robust to lane color and varied lighting conditions. There are several combinations of thresholds that are detailed below. The last image (bottom right) is the final binary image passed to the next step in the pipeline. 
 
 ![combined](processed_images/threshold1.png) ![combined](processed_images/threshold2.png)
 
-### 4. Lane Line Detection and Polynomial Fit
-To identify lane lines, use a sliding window technique to identify non-zero pixels (pixels that have passed the thresholding stage). After tuning, I discovered that 9 windows, 100 pixel window width, and 50 pixel minimum to shift window, gives good performance. Using the detected pixels, a lane line polynomial fit is calculated and saved for use in future frames.
+### 4 Lane Line Detection 
+There are 2 ways in which this pipeline categorizes the pixels from the binary image as "left lane pixels", "right lane pixels", or falsely identified. The "New Fit" process, detailed in section 4.1, occurs when the condition below fails. "Historical Fit", detailed in section 4.2 occurs when the condition is true.
+* Detection condition: 3 frames that have identified lane lines with "high confidence", and there haven't been 3 consecutive frames without a high confidence detection 
+* high confidence = a lane line detected when the 2 lines (left and right) have radius of curvature < 300 meters, and the distance between the detected lane lines is >=400px and <=900px. 
+
+### 4.1 Lane line Detection - New Fit 
+This technique is "starting from scratch". This occurs either at the beginning of the video, or when the pipeline has not made a high confidence detection due to difficult road conditions. To start, a histogram of the bottom half of the binary threshold image determines the X position of the left and right lane lines. These two positions are where the sliding window technique begins. After tuning, I discovered that 9 windows, 100 pixel window width, and 50 pixel minimum to shift window, gives good performance. Pixels identified in each window are considered lane line pixels. Using these detected pixels, a lane line polynomial fit is calculated and saved for use in future frames.
 
 ![sliding window](processed_images/sliding_window.png)
 
-A different approach is used to detect lane line pixels if there are 3 consecutive frames of "high confidence" lane line detections. A lane line is considered "detected with high confidence" when the 2 lines have similar curvature (<=400 meter curvature radius) and 500px < distance between lines < 750px. If 3 consecutive frames have a high confidence detection, then we average the 3 polynomial fits from those frames, and use the average as our region of interest (+/- 50 pixels) for detecting lane line pixels in this frame. 
+### 4.2 Lane Line Detection - Historical Fit
+This approach is used to detect lane line pixels if the "high confidence" condition, stated above, is passed. In this case, instead of a sliding window, the previous 3 high confidence polynomial fits are averaged. This average polynomial becomes the region of interest (+/- 75 pixels horizontally) for detecting lane line pixels in this frame. 
 
 ![roi pixel detection](processed_images/roi_detection.png)
 
-### 5. Final Image
+### 5. Calculate Curvature
+Calculate radii of curvature for both left and right lane lines
+
+### 6. Determine Detection Confidence and Save
+Issue a lane line acceptance test to determine if this detection is considered "high confidence". The following two conditions must be met:
+* If 1 lane has significant curvature (>300 meters), then the two lanes must not differ in curvature by more than 300 meters
+* The starting position of the left and right lines must be >=400px and <=900px apart
+If these conditions are met, the lane detection gets saved to the Lane_Detector class to be used in finding lane pixels in future frames
+
+### 7. Final Image
 Warp the fit from the rectified image back onto the original image. Add picture in picture video for visualization of raw detections
 
 ![final](processed_images/final.png)
