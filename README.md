@@ -6,7 +6,7 @@ Software pipeline to identify lane lines and measure lane curvature from a video
 * Calibrate camera to remove distortion
 * Apply thresholds on color and gradient features to isloate pixels of lane lines
 * Apply perspective transform on region of interest 
-* Identify lane line pixels by searching image with sliding windows, or using the location of previously detected lane lines
+* Classify left/right lane line pixels by searching image with sliding windows, or using the location of previously detected lane lines
 * Generate lane line polynomial fit on the pixels detected from the previous step
 * Warp the the polynomial fit back onto the original image 
 
@@ -25,15 +25,7 @@ Use the OpenCV function undistort() and the pickled camera matrix and distortion
 
 ### 2. Apply Color and Gradient Thresholds
 
-X and Y Gradients are used to detect steep edges that are likely to be lane lines
-
-![gradients](grad_x.png) ![gradients](grad_y.png)
-
-HLS Color space, specifically the S-channel provides a fairly robust way of detecting lane pixels, which often have high saturation
-
-![color_space](color_space.png)
-
-Combine thresholds to allow for robust lane line pixel detection in a variety of lighting conditions
+I manually tuned these color and gradient thresholds to be robust to lane color and varied lighting conditions. There are several combinations of thresholds that are detailed below:
 
 ![combined](combined.png)
 
